@@ -2748,7 +2748,9 @@ static void emit_GLSL_attribute(Context *ctx, RegisterType regtype, int regnum,
             output_line(ctx, "#define %s %s%s%s%s", var, usage_str,
                         arrayleft, index_str, arrayright);
 #else
-            if (strcmp(usage_str, "gl_FragColor") != 0) {
+            if (strcmp(usage_str, "gl_FragColor") != 0
+                && strcmp(usage_str, "gl_FragData") != 0)
+            {
                 if (strlen(index_str) > 0) {
                     output_line(ctx, "#define %s %s_%s", var, usage_str, index_str);
                     output_line(ctx, "varying vec4 %s_%s;", usage_str, index_str);
