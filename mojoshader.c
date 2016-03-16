@@ -2565,6 +2565,9 @@ static void emit_GLSL_attribute(Context *ctx, RegisterType regtype, int regnum,
                 case MOJOSHADER_USAGE_POSITION:
                     usage_str = "gl_Position";
                     break;
+                case MOJOSHADER_USAGE_NORMAL:
+                    usage_str = "var_Normal";
+                    break;
                 case MOJOSHADER_USAGE_POINTSIZE:
 #if 0
                     usage_str = "gl_PointSize";
@@ -2713,6 +2716,11 @@ static void emit_GLSL_attribute(Context *ctx, RegisterType regtype, int regnum,
 #endif
                 else
                     fail(ctx, "unsupported color index");
+            } // else if
+
+            else if (usage == MOJOSHADER_USAGE_NORMAL)
+            {
+                usage_str = "var_Normal";
             } // else if
         } // else if
 
@@ -9716,6 +9724,10 @@ const MOJOSHADER_parseData *MOJOSHADER_parse(const char *profile,
         for (RegisterList* item = ctx->attributes.next; item != NULL; item = item->next)
         {
             char name[64];
+
+            if (item->regtype == REG_TYPE_TEXCRDOUT) {
+                continue;
+            }
 
             switch (item->usage)
             {
